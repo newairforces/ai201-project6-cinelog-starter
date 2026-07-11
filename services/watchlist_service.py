@@ -18,7 +18,7 @@ class AlreadyInWatchlistError(Exception):
 
 
 class NotInWatchlistError(Exception):
-    """Raised when trying to update a film that isn't in the watchlist."""
+    """Raised when trying to remove a film that isn't in the watchlist."""
 
 
 def add_to_watchlist(user_id, film_id, public=True):
@@ -53,6 +53,25 @@ def add_to_watchlist(user_id, film_id, public=True):
     db.session.add(entry)
     db.session.commit()
     return entry
+
+
+def remove_from_watchlist(user_id, film_id):
+    """
+    Remove a film from a user's watchlist.
+
+    Returns:
+        bool: True if the entry was removed.
+
+    Raises:
+        NotInWatchlistError: If the film is not in the user's watchlist.
+    """
+    entry = WatchlistEntry.query.filter_by(user_id=user_id, film_id=film_id).first()
+    if entry is None:
+        raise NotInWatchlistError(f"Film '{film_id}' is not in this user's watchlist")
+
+    db.session.delete(entry)
+    db.session.commit()
+    return True
 
 
 def update_watchlist_visibility(user_id, film_id, public):
