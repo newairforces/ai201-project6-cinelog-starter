@@ -80,7 +80,9 @@ class WatchlistEntry(db.Model):
 
     id = db.Column(db.String(36), primary_key=True, default=generate_uuid)
     user_id = db.Column(db.String(36), db.ForeignKey("user.id"), nullable=False)
-    film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
+    # film_id is a UUID string to match Film.id after the main-branch refactor
+    # that migrated film IDs from integer to UUID.
+    film_id = db.Column(db.String(36), db.ForeignKey("film.id"), nullable=False)
     date_added = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     __table_args__ = (
