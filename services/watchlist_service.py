@@ -13,7 +13,7 @@ class FilmNotFoundError(Exception):
     """Raised when a film_id does not exist in the database."""
 
 
-def save_to_watchlist(user_id, film_id):
+def add_to_watchlist(user_id, film_id):
     """
     Add a film to a user's watchlist.
 
